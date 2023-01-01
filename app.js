@@ -7,7 +7,7 @@ const methodOverride = require('method-override')
 
 const Blog = require('./models/blog');
 
-mongoose.connect('mongodb://localhost:27017/apiMatcom', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://ice-009:Armaan%4006@cluster0.ynzphiq.mongodb.net/apiMatcom', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
