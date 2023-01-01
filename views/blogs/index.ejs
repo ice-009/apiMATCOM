@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blogs</title>
+</head>
+
+<body>
+    <h1><%= category%> Blogs!</h1>
+    <ul>
+        <% for(let blog of blogs) { %>
+        <li><a href="/blogs/<%=blog._id%>"><%= blog.title %></a> </li>
+        <% }%>
+    </ul>
+    <a href="/blogs/new">New Blog</a>
+    <%if(category !== 'All') {%>
+    <a href="/blogs">All Blogs</a>
+    <% } %>
+
+</body>
+
+</html>

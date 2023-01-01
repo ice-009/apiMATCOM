@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override')
 
 
-const Product = require('./models/product');
+const Blog = require('./models/blog');
 
-mongoose.connect('mongodb://localhost:27017/farmStand', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/apiMatcom', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
@@ -23,51 +23,51 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 
-const categories = ['fruit', 'vegetable', 'dairy'];
+const categories = [];
 
-app.get('/products', async (req, res) => {
+app.get('/blogs', async (req, res) => {
     const { category } = req.query;
     if (category) {
-        const products = await Product.find({ category })
-        res.render('products/index', { products, category })
+        const blogs = await Blog.find({ category })
+        res.render('blogs/index', { blogs, category })
     } else {
-        const products = await Product.find({})
-        res.render('products/index', { products, category: 'All' })
+        const blogs = await Blog.find({})
+        res.render('blogs/index', { blogs, category: 'All' })
     }
 })
 
-app.get('/products/new', (req, res) => {
-    res.render('products/new', { categories })
+app.get('/blogs/new', (req, res) => {
+    res.render('blogs/new', { categories })
 })
 
-app.post('/products', async (req, res) => {
-    const newProduct = new Product(req.body);
-    await newProduct.save();
-    res.redirect(`/products/${newProduct._id}`)
+app.post('/blogs', async (req, res) => {
+    const newBlog = new Blog(req.body);
+    await newBlog.save();
+    res.redirect(`/blogs/${newBlog._id}`)
 })
 
-app.get('/products/:id', async (req, res) => {
+app.get('/blogs/:id', async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id)
-    res.render('products/show', { product })
+    const blog = await Blog.findById(id)
+    res.render('blogs/show', { blog })
 })
 
-app.get('/products/:id/edit', async (req, res) => {
+app.get('/blogs/:id/edit', async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id);
-    res.render('products/edit', { product, categories })
+    const blog = await Blog.findById(id);
+    res.render('blogs/edit', { blog, categories })
 })
 
-app.put('/products/:id', async (req, res) => {
+app.put('/blogs/:id', async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
-    res.redirect(`/products/${product._id}`);
+    const blog = await Blog.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
+    res.redirect(`/blogs/${blog._id}`);
 })
 
-app.delete('/products/:id', async (req, res) => {
+app.delete('/blogs/:id', async (req, res) => {
     const { id } = req.params;
-    const deletedProduct = await Product.findByIdAndDelete(id);
-    res.redirect('/products');
+    const deletedProduct = await Blog.findByIdAndDelete(id);
+    res.redirect('/blogs');
 })
 
 
