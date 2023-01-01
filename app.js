@@ -1,12 +1,24 @@
 const express = require('express');
 const app = express();
+const port = process.env.port || 3000
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override')
-
+const {MongoClient} = require('mongodb')
 
 const Blog = require('./models/blog');
+const url= 'mongodb+srv://ice-009:Armaan%4006@cluster0.ynzphiq.mongodb.net/';
+const databaseName='apiMatcom'
+const client= new MongoClient(url);
 
+async function dbConnect()
+{
+    let result = await client.connect();
+    db= result.db(databaseName);
+    return db.collection('blogs');
+  
+}
+module.exports= dbConnect;
 mongoose.connect('mongodb+srv://ice-009:Armaan%4006@cluster0.ynzphiq.mongodb.net/apiMatcom', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
@@ -70,9 +82,13 @@ app.delete('/blogs/:id', async (req, res) => {
     res.redirect('/blogs');
 })
 
-
-
-app.listen(3000, () => {
+app.use(express.json());
+app.get('/',async (res,resp)=>{
+    let data = await dbConnect();
+    data= await data.find().toArray();
+    resp.send(data);
+});
+app.listen(port, () => {
     console.log("APP IS LISTENING ON PORT 3000!")
 })
 
