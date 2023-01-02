@@ -43,7 +43,9 @@ const requireLogin= (req,res,next)=>{
   next();
 }
 const categories = [];
-
+app.get('/', (req,res)=>{
+  res.render('blogs/home');
+})
 
 // app.get('/register', (req,res)=>{
 //   res.render('blogs/register');
@@ -58,20 +60,21 @@ app.post('/register', async (req,res)=>{
   await user.save();
   res.redirect('/');
 })
+
 app.get('/login', (req,res)=>{
   res.render('blogs/login');
 })
 app.post('/login', async(req,res)=>{
-  const {username, passoword} = req.body;
+  const {username, password} = req.body;
   const user= await User.findOne({username})
-  const validPass = bcrypt.compare(passoword, user.passoword)
-  if (validPass){
-    req.session._id= user._id
-    res.send('hi')
-  }
-  else {
-    res.send('try again')
-  }
+  const validPass = await bcrypt.compare(password, user.password)
+    if (validPass){
+      req.session.user_id= user._id
+      res.redirect('/blogs')
+     }
+    else {
+      res.send('try again')
+    }
 })
 
 app.get("/blogs", requireLogin, async (req, res) => {
@@ -123,7 +126,7 @@ app.delete("/blogs/:id", requireLogin,async (req, res) => {
 });
 
 app.use(express.json());
-app.get("/", async (req ,res) => {
+app.get("/api", async (req ,res) => {
   let data = await dbConnect();
   data = await data.find().toArray();
   res.send(data);
