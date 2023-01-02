@@ -12,8 +12,8 @@
     <form action="/blogs/<%=blog._id%>?_method=PUT" method="POST">
         <label for="title">Blog Name</label>
         <input type="text" title="title" id="title" placeholder="blog title" value="<%=blog.title%>">
-        <label for="content">Price (Unit)</label>
-        <input type="number" id="content" title="content" placeholder="content" value="<%= blog.content %>">
+        <label for="content">content</label>
+        <input type="text" id="content" title="content" placeholder="content" value="<%= blog.content %>">
         
         <button>Submit</button>
     </form>
