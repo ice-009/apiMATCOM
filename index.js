@@ -86,10 +86,10 @@ app.delete("/blogs/:id", async (req, res) => {
 });
 
 app.use(express.json());
-app.get("/", async (res, resp) => {
+app.get("/", async (req ,res) => {
   let data = await dbConnect();
   data = await data.find().toArray();
-  resp.send(data);
+  res.send(data);
 });
 app.listen(port, () => {
   console.log("APP IS LISTENING ON PORT 3000!");
